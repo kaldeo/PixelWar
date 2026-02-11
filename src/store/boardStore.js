@@ -1,65 +1,61 @@
 function createEmptyGrid(size) {
-    return Array.from({ length: size }, () => Array.from({ length: size }, () => '#000000'));
+  return Array.from({ length: size }, () =>
+    Array.from({ length: size }, () => "#000000"),
+  );
 }
 
-function createBoardStore(collection, size) {
-const boardId = 'default';
+function createBoardStore(collection, userCollection, size) {
+  const boardId = "default";
 
-async function ensureBoard() {
-const existing = await collection.findOne({ _id: boardId });
-if (!existing || !Array.isArray(existing.grid) || existing.grid.length !== size) {
-    await collection.replaceOne(
-    { _id: boardId },
-    { _id: boardId, size, grid: createEmptyGrid(size) },
-    { upsert: true }
-    );
-}
-}
-
-async function getBoard() {
-const board = await collection.findOne(
-    { _id: boardId },
-    { projection: { _id: 0 } }
-);
-
-if (!board || !Array.isArray(board.grid)) {
-    await ensureBoard();
-    const fresh = await collection.findOne(
-    { _id: boardId },
-    { projection: { _id: 0 } }
-    );
-    return fresh;
-}
-
-return board;
-}
-
-async function setPixel(x, y, color) {
-await ensureBoard();
-const path = `grid.${y}.${x}`;
-await collection.updateOne(
-    { _id: boardId },
-    { $set: { [path]: color } }
-);
-}
-
-async function reset() {
-await collection.replaceOne(
-    { _id: boardId },
-    { _id: boardId, size, grid: createEmptyGrid(size) },
-    { upsert: true }
-);
-}
-
-return {
+  return {
     size,
-    ensureBoard,
-    getBoard,
-    setPixel,
-    reset
-};
+    async ensureBoard() {
+      const existing = await collection.findOne({ _id: boardId });
+      if (!existing)
+        await collection.insertOne({
+          _id: boardId,
+          size,
+          grid: createEmptyGrid(size),
+        });
+    },
+    async getBoard() {
+      return await collection.findOne({ _id: boardId });
+    },
+    async setPixel(x, y, color, username) {
+      const now = new Date();
+      const minDate = new Date(now - 3000);
+
+      const userUpdate = await userCollection.findOneAndUpdate(
+        {
+          username: username,
+          $or: [
+            { lastPixelAt: { $lte: minDate } },
+            { lastPixelAt: { $exists: false } },
+          ],
+        },
+        { $set: { lastPixelAt: now } },
+        { upsert: true, returnDocument: "after" },
+      );
+
+      if (!userUpdate) {
+        const err = new Error("Cooldown actif");
+        err.status = 429;
+        throw err;
+      }
+
+
+      await collection.updateOne(
+        { _id: boardId },
+        { $set: { [`grid.${y}.${x}`]: color } },
+      );
+    },
+    async reset() {
+      await collection.updateOne(
+        { _id: boardId },
+        { $set: { grid: createEmptyGrid(size) } },
+      );
+    },
+  };
 }
 
-module.exports = {
-createBoardStore
-};
+module.exports = { createBoardStore };

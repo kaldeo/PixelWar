@@ -11,15 +11,31 @@
     <header class="hero">
       <div class="hero-copy">
         <p class="eyebrow">Pixel War</p>
-        <h1>Grille 50x50 en temps reel</h1>
-        <p class="sub">Clique pour peindre un carre. Maintiens et glisse pour dessiner.</p>
+        <h1>Grille 50x50</h1>
+        <p class="sub">
+          Entre ton pseudo et participe à la fresque collective !
+        </p>
       </div>
       <div class="hero-controls">
+        <label class="control">
+          <span>Pseudo</span>
+          <input
+            id="username"
+            type="text"
+            placeholder="Ton pseudo..."
+            maxlength="15"
+          />
+        </label>
         <label class="control">
           <span>Couleur</span>
           <input id="color" type="color" value="#ff3b30" />
         </label>
-        <button id="reset" class="btn">Reinitialiser</button>
+
+        <div class="cooldown-container">
+          <div id="cooldown-bar"></div>
+        </div>
+
+        <button id="reset" class="btn">Réinitialiser</button>
         <div id="status" class="status">Connexion...</div>
       </div>
     </header>
