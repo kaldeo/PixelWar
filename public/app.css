@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap");
 
 :root {
   --bg: #0b1020;
@@ -18,11 +18,16 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(1200px 600px at 10% 10%, #1b2648 0%, transparent 55%),
+  background:
+    radial-gradient(1200px 600px at 10% 10%, #1b2648 0%, transparent 55%),
     radial-gradient(900px 600px at 90% 20%, #301a3d 0%, transparent 60%),
     linear-gradient(160deg, var(--bg) 10%, var(--bg-2) 100%);
   color: var(--text);
-  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Space Grotesk",
+    system-ui,
+    -apple-system,
+    sans-serif;
   padding: 32px 24px 48px;
   position: relative;
 }
@@ -30,7 +35,11 @@ body {
 .bg-glow {
   position: fixed;
   inset: 0;
-  background: radial-gradient(500px 300px at 70% 80%, rgba(255, 209, 102, 0.12), transparent 60%);
+  background: radial-gradient(
+    500px 300px at 70% 80%,
+    rgba(255, 209, 102, 0.12),
+    transparent 60%
+  );
   pointer-events: none;
 }
 
@@ -41,43 +50,16 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 28px;
-  animation: fadeIn 800ms ease-out both;
 }
-
-.hero-copy {
-  max-width: 540px;
-}
-
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  font-size: 12px;
-  color: var(--accent-2);
-  margin: 0 0 10px;
-  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-}
-
-h1 {
-  margin: 0 0 12px;
-  font-size: clamp(28px, 4vw, 44px);
-  line-height: 1.05;
-}
-
-.sub {
-  margin: 0;
-  color: var(--muted);
-  font-size: 16px;
-}
-
 .hero-controls {
   display: grid;
   gap: 12px;
   padding: 16px;
   background: rgba(12, 18, 36, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   backdrop-filter: blur(10px);
-  min-width: 220px;
+  min-width: 240px;
 }
 
 .control {
@@ -85,15 +67,18 @@ h1 {
   gap: 6px;
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
   color: var(--muted);
 }
 
+/* Correction Input : Texte blanc et fond visible */
 .control input {
   width: 100%;
   height: 44px;
   border: none;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff !important;
+  padding: 0 12px;
 }
 
 .btn {
@@ -105,24 +90,23 @@ h1 {
   background: linear-gradient(135deg, var(--accent) 0%, #ff7b00 100%);
   color: #0b0f1a;
   cursor: pointer;
-  transition: transform 120ms ease, box-shadow 200ms ease;
+  transition: transform 120ms ease;
 }
 
-.btn:hover {
-  transform: translateY(-1px) scale(1.01);
-  box-shadow: 0 10px 24px rgba(255, 82, 60, 0.3);
+/* Cooldown Bar */
+.cooldown-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 4px 0;
 }
-
-.status {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.canvas-wrap {
-  display: flex;
-  justify-content: center;
-  animation: riseIn 900ms ease-out both;
-  animation-delay: 120ms;
+#cooldown-bar {
+  width: 0%;
+  height: 100%;
+  background: var(--accent-2);
+  transition: width 100ms linear;
 }
 
 .grid {
@@ -133,7 +117,12 @@ h1 {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 18px 40px rgba(10, 15, 30, 0.55);
+}
+.grid.locked {
+  cursor: not-allowed;
+  opacity: 0.7;
+  filter: grayscale(0.5);
+  pointer-events: none;
 }
 
 .cell {
@@ -141,39 +130,15 @@ h1 {
   border-bottom: 1px solid var(--cell-border);
   transition: transform 80ms ease;
 }
-
 .cell:hover {
   transform: scale(1.02);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.status {
+  font-size: 12px;
+  color: var(--muted);
 }
-
-@keyframes riseIn {
-  from {
-    opacity: 0;
-    transform: translateY(18px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@media (max-width: 720px) {
-  body {
-    padding: 24px 16px 32px;
-  }
-
-  .grid {
-    width: 100%;
-  }
+.status.warning {
+  color: var(--accent);
+  font-weight: bold;
 }
