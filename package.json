@@ -2,21 +2,14 @@
   "name": "pixelwar-1",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
+    "start": "node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kaldeo/PixelWar.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kaldeo/PixelWar/issues"
-  },
-  "homepage": "https://github.com/kaldeo/PixelWar#readme",
+  "author": "By Gab",
   "dependencies": {
-    "coreroute": "^1.4.0"
+    "coreroute": "^1.4.0",
+    "mongodb": "^6.13.0"
   }
 }
