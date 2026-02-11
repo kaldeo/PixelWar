@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pixel War</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div class="bg-glow"></div>
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Pixel War</p>
+        <h1>Grille 50x50 en temps reel</h1>
+        <p class="sub">Clique pour peindre un carre. Maintiens et glisse pour dessiner.</p>
+      </div>
+      <div class="hero-controls">
+        <label class="control">
+          <span>Couleur</span>
+          <input id="color" type="color" value="#ff3b30" />
+        </label>
+        <button id="reset" class="btn">Reinitialiser</button>
+        <div id="status" class="status">Connexion...</div>
+      </div>
+    </header>
+
+    <main class="canvas-wrap">
+      <div id="grid" class="grid" aria-label="Grille Pixel War"></div>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
